@@ -9,4 +9,7 @@
 - include_tasks: one_setup.yml
   when: one_setup| bool
 
+- include_tasks: one_update.yml
+  when: one_update| bool
+
 

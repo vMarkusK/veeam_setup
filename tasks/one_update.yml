@@ -1,0 +1,6 @@
+# one_update tasks file for veeam_setup
+- name: Install ONE Update
+  win_package:
+    path: "{{ one_source }}Updates\\{{ one_update_file }}"
+    product_id: "{{ one_update_id }}"
+    arguments: "/silent /noreboot VM_ONE_SERVICEPASSWORD={{ one_userpassword }}"

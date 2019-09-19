@@ -1,2 +1,90 @@
 ---
 # one_setup tasks file for veeam_setup
+- name: Pre - Create Local Veeam ONE Service User
+  win_user:
+    name: "{{ one_username }}"
+    password: "{{ one_userpassword }}"
+    password_never_expires: yes
+    state: present
+    groups:
+        - Administrators
+- name: Pre - Create Local SQL Service User
+  win_user:
+    name: "{{ sql_username }}"
+    password: "{{ sql_userpassword }}"
+    password_never_expires: yes
+    state: present
+    groups:
+        - Users
+- name: Pre - Install 2012 System CLR Types
+  win_package:
+    path: "{{ one_source }}Redistr\\x64\\SQLSysClrTypes.msi"
+    state: present
+- name: Pre - Install 2012 Shared management objects
+  win_package:
+    path: "{{ one_source }}Redistr\\x64\\SharedManagementObjects.msi"
+    state: present
+- name: Pre - Install XML Parser
+  win_package:
+    path: "{{ one_source }}Redistr\\x64\\msxml6_x64.msi"
+    state: present
+- name: Pre - Install SQL Native Client
+  win_package:
+    path: "{{ one_source }}Redistr\\x64\\sqlncli.msi"
+    state: present
+    arguments: "IACCEPTSQLNCLILICENSETERMS=YES"
+- name: Pre - Install ReportViewer
+  win_package:
+    path: "{{ one_source }}Redistr\\ReportViewer.msi"
+    state: present
+- name: Pre - Install IIS
+  win_feature:
+    name: Web-Server
+    state: present
+    include_sub_features: yes
+    include_management_tools: yes
+- name: SQL - Install SQL 2016 Express
+  win_package:
+    path: "{{ one_source }}Redistr\\x64\\SqlExpress\\2016SP1\\SQLEXPR_x64_ENU.exe"
+    product_id: SQL 2016 Express
+    arguments: 
+    - '/q'
+    - '/ACTION=Install'
+    - '/IACCEPTSQLSERVERLICENSETERMS' 
+    - '/FEATURES=SQL' 
+    - '/INSTANCENAME=VEEAMSQL2016'
+    - '/SQLSVCACCOUNT={{ sql_username }}'
+    - '/SQLSVCPASSWORD={{ sql_userpassword }}'
+    - '/SECURITYMODE=SQL'
+    - '/SAPWD={{ sql_sapassword }}'
+    - '/ADDCURRENTUSERASSQLADMIN'
+    - '/UPDATEENABLED=0'
+    - '/TCPENABLED=1'
+    - '/NPENABLED=1'
+- name: Install ONE Monitor Server 
+  win_package:
+    path: "{{ one_source }}Monitor\\VeeamONE.Monitor.Server.x64.msi"
+    state: present
+    # Veean Documentation wrong, VM_VC_SELECTED_TYPE=2 is not default!
+    arguments: "ACCEPT_THIRDPARTY_LICENSES=1 ACCEPTEULA=1 VM_MN_SERVICEACCOUNT={{ one_username }} VM_MN_SERVICEPASSWORD={{ one_userpassword }} VM_MN_SQL_SERVER=localhost\\VEEAMSQL2016 VM_MN_SQL_AUTHENTICATION=1 VM_MN_SQL_USER=sa VM_MN_SQL_PASSWORD={{ sql_sapassword }} VM_BACKUP_ADD_LATER=1 VM_VC_SELECTED_TYPE=2"
+- name: Install ONE Reporter Server 
+  win_package:
+    path: "{{ one_source }}Reporter\\VeeamONE.Reporter.Server.x64.msi"
+    state: present
+    # Veean Documentation wrong, VM_VC_SELECTED_TYPE=2 is not default!
+    arguments: "ACCEPT_THIRDPARTY_LICENSES=1 ACCEPTEULA=1 VM_RP_SERVICEACCOUNT={{ one_username }} VM_RP_SERVICEPASSWORD={{ one_userpassword }} VM_RP_SQL_SERVER=localhost\\VEEAMSQL2016 VM_RP_SQL_AUTHENTICATION=1 VM_RP_SQL_USER=sa VM_RP_SQL_PASSWORD={{ sql_sapassword }} VM_BACKUP_ADD_LATER=1 VM_VC_SELECTED_TYPE=2"
+- name: Install ONE Reporter Web UI  
+  win_package:
+    path: "{{ one_source }}Reporter\\VeeamONE.Reporter.WebUI.x64.msi"
+    state: present
+    arguments: "ACCEPT_THIRDPARTY_LICENSES=1 ACCEPTEULA=1 VM_RP_SERVICEACCOUNT={{ one_username }} VM_RP_SERVICEPASSWORD={{ one_userpassword }} VM_RP_SQL_SERVER=localhost\\VEEAMSQL2016 VM_RP_SQL_AUTHENTICATION=1 VM_RP_SQL_USER=sa VM_RP_SQL_PASSWORD={{ sql_sapassword }}"
+- name: Install ONE Monitor Client
+  win_package:
+    path: "{{ one_source }}Monitor\\VeeamONE.Monitor.Client.x64.msi"
+    state: present
+    arguments: "ACCEPT_THIRDPARTY_LICENSES=1 ACCEPTEULA=1"
+- name: Install ONE Agent 
+  win_package:
+    path: "{{ one_source }}Agent\\VeeamONE.Agent.x64.msi"
+    state: present
+    arguments: "ACCEPT_THIRDPARTY_LICENSES=1 ACCEPTEULA=1 VO_AGENT_TYPE=1 VO_BUNDLE_INSTALLATION=1 VO_AGENT_SERVICE_ACCOUNT_NAME={{ one_username }} VO_AGENT_SERVICE_ACCOUNT_PASSWORD={{ one_userpassword }}"
