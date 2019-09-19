@@ -1,5 +1,12 @@
 ---
 # one_setup tasks file for veeam_setup
+- name: Pre - Disable firewall for Domain, Public and Private profiles
+  win_firewall:
+    state: disabled
+    profiles:
+    - Domain
+    - Private
+    - Public
 - name: Pre - Create Local Veeam ONE Service User
   win_user:
     name: "{{ one_username }}"
