@@ -11,5 +11,3 @@
 
 - include_tasks: one_update.yml
   when: one_update| bool
-
-
