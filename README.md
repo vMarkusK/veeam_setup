@@ -45,10 +45,11 @@ none
 - name: Veeam Backup & Replication Community Edition Setup
   hosts: veeam
   gather_facts: no
-  vbr_setup: true
-  vbr_update: true
-  one_setup: false
-  one_update: false
+  vars:
+    vbr_setup: true
+    vbr_update: true
+    one_setup: false
+    one_update: false
   roles:
     - veeam_setup
 ```
@@ -59,10 +60,11 @@ none
 - name: Veeem ONE Free Edition Setup
   hosts: veeam
   gather_facts: no
-  vbr_setup: false
-  vbr_update: false
-  one_setup: true
-  one_update: true
+  vars:
+    vbr_setup: false
+    vbr_update: false
+    one_setup: true
+    one_update: true
   roles:
     - veeam_setup
 ```
