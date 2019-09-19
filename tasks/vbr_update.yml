@@ -1,0 +1,6 @@
+# vbr_update tasks file for veeam_setup
+- name: Install VBR Update
+  win_package:
+    path: "{{ vbr_source }}Updates\\{{ vbr_update_file }}"
+    product_id: "{{ vbr_update_id }}"
+    arguments: "/silent /noreboot VBR_AUTO_UPGRADE=1"

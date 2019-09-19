@@ -1,0 +1,90 @@
+---
+# vbr_setup tasks file for veeam_setup
+- name: Pre - Install 2012 System CLR Types
+  win_package:
+    path: "{{ vbr_source }}Redistr\\x64\\SQLSysClrTypes.msi"
+    state: present
+- name: Pre - Install 2012 Shared management objects
+  win_package:
+    path: "{{ vbr_source }}Redistr\\x64\\SharedManagementObjects.msi"
+    state: present
+- name: SQL - Create Local SQL User
+  win_user:
+    name: "{{ sql_username }}"
+    password: "{{ sql_userpassword }}"
+    password_never_expires: yes
+    state: present
+    groups:
+        - Users
+- name: SQL - Install SQL 2016 Express
+  win_package:
+    path: "{{ vbr_source }}Redistr\\x64\\SqlExpress\\2016SP1\\SQLEXPR_x64_ENU.exe"
+    product_id: SQL 2016 Express
+    arguments: 
+    - '/q'
+    - '/ACTION=Install'
+    - '/IACCEPTSQLSERVERLICENSETERMS' 
+    - '/FEATURES=SQL' 
+    - '/INSTANCENAME=VEEAMSQL2016'
+    - '/SQLSVCACCOUNT={{ sql_username }}'
+    - '/SQLSVCPASSWORD={{ sql_userpassword }}'
+    - '/SECURITYMODE=SQL'
+    - '/SAPWD={{ sql_sapassword }}'
+    - '/ADDCURRENTUSERASSQLADMIN'
+    - '/UPDATEENABLED=0'
+    - '/TCPENABLED=1'
+    - '/NPENABLED=1'
+- name: Install VBR Catalog
+  win_package:
+    path: "{{ vbr_source }}Catalog\\VeeamBackupCatalog64.msi"
+    state: present
+    arguments:
+        - 'VBRC_SERVICE_ACCOUNT_TYPE=1'
+        - 'ACCEPT_THIRDPARTY_LICENSES=1'
+- name: Install VBR Server
+  win_package:
+    path: "{{ vbr_source }}Backup\\Server.x64.msi"
+    state: present
+    arguments: "VBR_SERVICE_ACCOUNT_TYPE=1 VBR_SQLSERVER_AUTHENTICATION=1 VBR_SQLSERVER_SERVER=(local)\\VEEAMSQL2016 VBR_SQLSERVER_USERNAME=sa VBR_SQLSERVER_PASSWORD={{ sql_sapassword }} ACCEPT_THIRDPARTY_LICENSES=1 ACCEPTEULA=YES"
+- name: Install VBR Console
+  win_package:
+    path: "{{ vbr_source }}Backup\\Shell.x64.msi"
+    state: present
+    arguments:
+        - 'ACCEPTEULA=YES'
+        - 'ACCEPT_THIRDPARTY_LICENSES=1'
+- name: Install VBR Explorer for ActiveDirectory
+  win_package:
+    path: "{{ vbr_source }}Explorers\\VeeamExplorerForActiveDirectory.msi"
+    state: present
+    arguments:
+        - 'ACCEPT_EULA=1'
+        - 'ACCEPT_THIRDPARTY_LICENSES=1'
+- name: Install VBR Explorer for Exchange
+  win_package:
+    path: "{{ vbr_source }}Explorers\\VeeamExplorerForExchange.msi"
+    state: present
+    arguments:
+        - 'ACCEPT_EULA=1'
+        - 'ACCEPT_THIRDPARTY_LICENSES=1'
+- name: Install VBR Explorer for Oracle
+  win_package:
+    path: "{{ vbr_source }}Explorers\\VeeamExplorerForOracle.msi"
+    state: present
+    arguments:
+        - 'ACCEPT_EULA=1'
+        - 'ACCEPT_THIRDPARTY_LICENSES=1'
+- name: Install VBR Explorer for SharePoint
+  win_package:
+    path: "{{ vbr_source }}Explorers\\VeeamExplorerForSharePoint.msi"
+    state: present
+    arguments:
+        - 'ACCEPT_EULA=1'
+        - 'ACCEPT_THIRDPARTY_LICENSES=1'
+- name: Install VBR Explorer for SQL
+  win_package:
+    path: "{{ vbr_source }}Explorers\\VeeamExplorerForSQL.msi"
+    state: present
+    arguments:
+        - 'ACCEPT_EULA=1'
+        - 'ACCEPT_THIRDPARTY_LICENSES=1'

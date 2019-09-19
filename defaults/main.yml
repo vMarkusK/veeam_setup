@@ -1,0 +1,15 @@
+---
+# defaults file for veeam_setup
+
+## Choose Setup
+vbr_setup: true
+vbr_update: true
+one_setup: false
+
+## VBR Parameters
+vbr_source: "D:\\"
+vbr_update_file: "veeam_backup_9.5.4.2866.update4b_setup.exe"
+vbr_update_id: "Veeam VBR Update 4b"
+sql_username: "svc_sql"
+sql_userpassword: "ChangeM3!"
+sql_sapassword: "ChangeM3!"
