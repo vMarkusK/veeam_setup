@@ -10,7 +10,7 @@ one_setup: false
 one_source: "E:\\"
 one_username: "svc_one"
 one_userpassword: "ChangeM3!"
-one_update_file: "VeeamONE_9.5.4.4587_Update#4a.exe" # Fix Name
+one_update_file: "VeeamONE_9.5.4.4587_Update#4a.exe"
 one_update_id: "Veeam ONE Update 4a"
 vbr_source: "D:\\"
 vbr_update_file: "veeam_backup_9.5.4.2866.update4b_setup.exe"

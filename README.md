@@ -12,7 +12,6 @@ Available variables are listed below, along with default values (see `defaults/m
 
 ```yaml
 ---
----
 # defaults file for veeam_setup
 
 ## Choose Setup
@@ -75,4 +74,5 @@ GNU Lesser General Public License v3.0
 ## Author Information
 
 Markus Kraus [@vMarkus_K](https://twitter.com/vMarkus_K)
+
 MY CLOUD-(R)EVOLUTION [mycloudrevolution.com](http://mycloudrevolution.com/)
