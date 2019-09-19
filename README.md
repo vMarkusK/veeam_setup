@@ -1,15 +1,14 @@
-veeam_setup
-=========
+# veeam_setup
+
 
 An Ansible Role that installs and updates [Veeam](https://www.veeam.com) components (Veeam Backup & Replication / Veeam ONE) on Windows.
 
-Requirements
-------------
+## Requirements
 
 none
 
-Role Variables
---------------
+
+## Role Variables
 
 Available variables are listed below, along with default values (see `defaults/main.yml`):
 
@@ -18,8 +17,8 @@ Available variables are listed below, along with default values (see `defaults/m
 # defaults file for veeam_setup
 
 ## Choose Setup
-vbr_setup: true
-vbr_update: true
+vbr_setup: false
+vbr_update: false
 one_setup: false
 
 ## VBR Parameters
@@ -31,13 +30,13 @@ sql_userpassword: "ChangeM3!"
 sql_sapassword: "ChangeM3!"
 ```
 
-Dependencies
-------------
+## Dependencies
 
 none
 
-Example Playbook
-----------------
+## Example Playbook
+
+### Veeam Backup & Replication Setup
 
 ```yaml
 - name: VBR Community Edition Setup
