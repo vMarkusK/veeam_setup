@@ -2,6 +2,22 @@
 
 An Ansible Role to install and update [Veeam](https://www.veeam.com) components (Veeam Backup & Replication / Veeam ONE) on Windows.
 
+## Release Notes
+
+### Version 0.1
+
+- one_setup - Version 0.1
+
+- one_update - Version 0.1
+
+- vbr_setup - Version 0.1
+
+- vbr_update - Version 0.1
+
+### Version 0.2
+- one_setup - Version 0.2
+  - Strict Windows Firewall configuration (instead of disabling)
+
 ## Requirements
 
 none

@@ -1,12 +1,48 @@
 ---
 # one_setup tasks file for veeam_setup
-- name: Pre - Disable firewall for Domain, Public and Private profiles
+- name: Pre - Enable firewall
   win_firewall:
-    state: disabled
+    state: enabled
     profiles:
     - Domain
     - Private
     - Public
+- name: Pre - Configure firewall rule "Reporter Console"
+  win_firewall_rule:
+    name: VeeamONE_ReporterConsole
+    localport: 1239
+    action: allow
+    direction: in
+    protocol: tcp
+    state: present
+    enabled: yes
+- name: Pre - Configure firewall rule "Business View"
+  win_firewall_rule:
+    name: VeeamONE_BusinessView
+    localport: 1340
+    action: allow
+    direction: in
+    protocol: tcp
+    state: present
+    enabled: yes
+- name: Pre - Configure firewall rule "Agent"
+  win_firewall_rule:
+    name: VeeamONE_Agent
+    localport: 2805
+    action: allow
+    direction: in
+    protocol: tcp
+    state: present
+    enabled: yes
+- name: Pre - Configure firewall rule "Server SMB"
+  win_firewall_rule:
+    name: VeeamONE_ServerSMB
+    localport: 445
+    action: allow
+    direction: in
+    protocol: tcp
+    state: present
+    enabled: yes
 - name: Pre - Create Local Veeam ONE Service User
   win_user:
     name: "{{ one_username }}"
