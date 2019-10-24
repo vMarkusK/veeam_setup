@@ -86,7 +86,7 @@
     state: present
     include_sub_features: yes
     include_management_tools: yes
-- name: SQL - Install SQL 2016 Express
+- name: Pre - Install SQL 2016 Express
   win_package:
     path: "{{ one_source }}Redistr\\x64\\SqlExpress\\2016SP1\\SQLEXPR_x64_ENU.exe"
     product_id: SQL 2016 Express
@@ -114,7 +114,6 @@
   win_package:
     path: "{{ one_source }}Reporter\\VeeamONE.Reporter.Server.x64.msi"
     state: present
-    # Veean Documentation wrong, VM_VC_SELECTED_TYPE=2 is not default!
     arguments: "ACCEPT_THIRDPARTY_LICENSES=1 ACCEPTEULA=1 VM_RP_SERVICEACCOUNT={{ one_username }} VM_RP_SERVICEPASSWORD={{ one_userpassword }} VM_RP_SQL_SERVER=localhost\\VEEAMSQL2016 VM_RP_SQL_AUTHENTICATION=1 VM_RP_SQL_USER=sa VM_RP_SQL_PASSWORD={{ sql_sapassword }} VM_BACKUP_ADD_LATER=1 VM_VC_SELECTED_TYPE=2"
 - name: Install ONE Reporter Web UI  
   win_package:
