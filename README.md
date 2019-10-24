@@ -18,6 +18,10 @@ An Ansible Role to install and update [Veeam](https://www.veeam.com) components 
 - one_setup - Version 0.2
   - Strict Windows Firewall configuration (instead of disabling)
 
+### Version 0.3
+- vbr_download - Version 0.1
+  - Add new Role Task to Download VBR ISO File
+
 ## Requirements
 
 none

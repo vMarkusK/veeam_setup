@@ -1,13 +1,21 @@
 ---
 # vbr_download tasks file for veeam_setup
-- name: Create directory
+- name: Create download directory
   win_file:
     path: {{ vbr_destination }}
     state: directory
-- name: Download VBR Source
+- name: Download VBR ISO
   win_get_url:
     url: {{ vbr_url }}
     dest: "{{ vbr_destination }}{{ vbr_destination_file }}"
     checksum: {{ vbr_checksum }}
     checksum_algorithm: sha256
     force: True
+- name: Mount VBR ISO
+  win_disk_image:
+    image_path: "{{ vbr_destination }}{{ vbr_destination_file }}"
+    state: present
+  register: disk_image_out
+- name: Set VBR Soure Fact
+  set_fact:
+    vbr_source: "{{ disk_image_out.mount_paths[0] }}"
