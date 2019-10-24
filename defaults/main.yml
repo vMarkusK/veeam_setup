@@ -2,6 +2,7 @@
 # defaults file for veeam_setup
 
 ## Choose Setup
+vbr_download: false
 vbr_setup: false
 vbr_update: false
 one_setup: false
@@ -12,6 +13,10 @@ one_username: "svc_one"
 one_userpassword: "ChangeM3!"
 one_update_file: "VeeamONE_9.5.4.4587_Update#4a.exe"
 one_update_id: "Veeam ONE Update 4a"
+vbr_url: "https://download2.veeam.com/VeeamBackup&Replication_9.5.4.2615.Update4.iso"
+vbr_checksum: "ecc27bbcf49104861566782701dca42375b324b4710e2fa79b5f8068c31c4494"
+vbr_destination: "C:\\install\\"
+vbr_destination_file: "vbr.iso"
 vbr_source: "D:\\"
 vbr_update_file: "veeam_backup_9.5.4.2866.update4b_setup.exe"
 vbr_update_id: "Veeam VBR Update 4b"

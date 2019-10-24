@@ -1,0 +1,13 @@
+---
+# vbr_download tasks file for veeam_setup
+- name: Create directory
+  win_file:
+    path: {{ vbr_destination }}
+    state: directory
+- name: Download VBR Source
+  win_get_url:
+    url: {{ vbr_url }}
+    dest: "{{ vbr_destination }}{{ vbr_destination_file }}"
+    checksum: {{ vbr_checksum }}
+    checksum_algorithm: sha256
+    force: True
