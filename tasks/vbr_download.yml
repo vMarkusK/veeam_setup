@@ -10,7 +10,7 @@
     dest: "{{ vbr_destination }}{{ vbr_destination_file }}"
     checksum: "{{ vbr_checksum }}"
     checksum_algorithm: sha256
-    force: True
+    force: false
 - name: Mount VBR ISO
   win_disk_image:
     image_path: "{{ vbr_destination }}{{ vbr_destination_file }}"
