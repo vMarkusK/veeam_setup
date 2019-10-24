@@ -1,5 +1,8 @@
 ---
 # tasks file for veeam_setup
+- include_tasks: vbr_download.yml
+  when: vbr_download | bool
+
 - include_tasks: vbr_setup.yml
   when: vbr_setup| bool
 
