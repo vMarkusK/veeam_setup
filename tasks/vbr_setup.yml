@@ -18,7 +18,7 @@
         - Users
 - name: SQL - Install SQL 2016 Express
   win_package:
-    path: "{{ vbr_source }}Redistr\\x64\\SqlExpress\\2016SP1\\SQLEXPR_x64_ENU.exe"
+    path: "{{ vbr_source }}Redistr\\x64\\SqlExpress\\2016SP2\\SQLEXPR_x64_ENU.exe"
     product_id: SQL 2016 Express
     arguments: 
     - '/q'
