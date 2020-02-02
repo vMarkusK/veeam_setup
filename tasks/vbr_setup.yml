@@ -16,9 +16,9 @@
     state: present
     groups:
         - Users
-- name: SQL - Install SQL 2016 Express
+- name: SQL - Install SQL Express 2016 SP2 
   win_package:
-    path: "{{ vbr_source }}Redistr\\x64\\SqlExpress\\2016SP1\\SQLEXPR_x64_ENU.exe"
+    path: "{{ vbr_source }}Redistr\\x64\\SqlExpress\\2016SP2\\SQLEXPR_x64_ENU.exe"
     product_id: SQL 2016 Express
     arguments: 
     - '/q'
@@ -30,7 +30,7 @@
     - '/SQLSVCPASSWORD={{ sql_userpassword }}'
     - '/SECURITYMODE=SQL'
     - '/SAPWD={{ sql_sapassword }}'
-    - '/ADDCURRENTUSERASSQLADMIN'
+    #- '/ADDCURRENTUSERASSQLADMIN'
     - '/UPDATEENABLED=0'
     - '/TCPENABLED=1'
     - '/NPENABLED=1'

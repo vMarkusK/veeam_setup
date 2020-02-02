@@ -22,6 +22,13 @@ An Ansible Role to install and update [Veeam](https://www.veeam.com) components 
 - vbr_download - Version 0.1
   - Add new Role Task to Download and Mount VBR ISO File
 
+### Version 0.4
+- vbr_setup - Version 0.2
+  - Modified für v10 RTM
+
+- one_setup - Version 0.3
+  - Modified für v10 RTM
+
 ## Requirements
 
 none
@@ -67,13 +74,13 @@ none
 ### Veeam Backup & Replication Setup with local Download
 
 ```yaml
-- name: Veeam Backup & Replication Community Edition Setup
+- name: Veeam Backup & Replication v10 Community Edition Setup
   hosts: veeam
   gather_facts: no
   vars:
     vbr_download: true
     vbr_setup: true
-    vbr_update: true
+    vbr_update: false
     one_setup: false
     one_update: false
   roles:
@@ -83,13 +90,13 @@ none
 ### Veeam Backup & Replication Setup without local Download
 
 ```yaml
-- name: Veeam Backup & Replication Community Edition Setup
+- name: Veeam Backup & Replication v10 Community Edition Setup
   hosts: veeam
   gather_facts: no
   vars:
     vbr_download: false
     vbr_setup: true
-    vbr_update: true
+    vbr_update: false
     one_setup: false
     one_update: false
   roles:
@@ -99,14 +106,14 @@ none
 ### Veeam ONE Setup
 
 ```yaml
-- name: Veeem ONE Free Edition Setup
+- name: Veeem ONE v10 Free Edition Setup
   hosts: veeam
   gather_facts: no
   vars:
     vbr_setup: false
     vbr_update: false
     one_setup: true
-    one_update: true
+    one_update: false
   roles:
     - veeam_setup
 ```
