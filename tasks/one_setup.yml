@@ -104,6 +104,12 @@
     - '/UPDATEENABLED=0'
     - '/TCPENABLED=1'
     - '/NPENABLED=1'
+  become: yes
+  become_flags: logon_type=batch
+  vars: 
+    ansible_become_method: runas
+    ansible_become_user: "{{ one_username }}"
+    ansible_become_pass: "{{ one_userpassword }}"
 - name: Install ONE Monitor Server 
   win_package:
     path: "{{ one_source }}Monitor\\VeeamONE.Monitor.Server.x64.msi"

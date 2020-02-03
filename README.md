@@ -34,6 +34,9 @@ An Ansible Role to install and update [Veeam](https://www.veeam.com) components 
   - Creates an additional Service and RunAs User
   - Run SQL Express Setup in RunAs-Mode
 
+- one_setup - Version 0.4
+  - Run SQL Express Setup in RunAs-Mode
+
 ## Requirements
 
 none
