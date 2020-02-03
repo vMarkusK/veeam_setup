@@ -29,6 +29,11 @@ An Ansible Role to install and update [Veeam](https://www.veeam.com) components 
 - one_setup - Version 0.3
   - Modified für v10 RTM
 
+### Version 0.5
+- vbr_setup - Version 0.3
+  - Creates an additional Service and RunAs User
+  - Run SQL Express Setup in RunAs-Mode
+
 ## Requirements
 
 none
@@ -58,6 +63,8 @@ vbr_checksum: "8a594cec74059f9929ea765ac5e70a49da6fc93803b567cbb9d74fbb1a49a6cc"
 vbr_destination: "C:\\install\\"
 vbr_destination_file: "vbr.iso"
 vbr_source: "D:\\"
+vbr_username: "svc_vbr"
+vbr_userpassword: "ChangeM3!"
 vbr_update_file: "veeam_backup_9.5.4.2866.update4b_setup.exe"
 vbr_update_id: "Veeam VBR Update 4b"
 sql_username: "svc_sql"

@@ -8,6 +8,14 @@
   win_package:
     path: "{{ vbr_source }}Redistr\\x64\\SharedManagementObjects.msi"
     state: present
+- name: Pre - Create Local Service and RunAs User
+  win_user:
+    name: "{{ vbr_username }}"
+    password: "{{ vbr_userpassword }}"
+    password_never_expires: yes
+    state: present
+    groups:
+        - Administrators
 - name: SQL - Create Local SQL User
   win_user:
     name: "{{ sql_username }}"
@@ -30,10 +38,16 @@
     - '/SQLSVCPASSWORD={{ sql_userpassword }}'
     - '/SECURITYMODE=SQL'
     - '/SAPWD={{ sql_sapassword }}'
-    #- '/ADDCURRENTUSERASSQLADMIN'
+    - '/ADDCURRENTUSERASSQLADMIN'
     - '/UPDATEENABLED=0'
     - '/TCPENABLED=1'
     - '/NPENABLED=1'
+  become: yes
+  become_flags: logon_type=batch
+  vars: 
+    ansible_become_method: runas
+    ansible_become_user: "{{ vbr_username }}"
+    ansible_become_pass: "{{ vbr_userpassword }}"
 - name: Install VBR Catalog
   win_package:
     path: "{{ vbr_source }}Catalog\\VeeamBackupCatalog64.msi"
