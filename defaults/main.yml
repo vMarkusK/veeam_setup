@@ -3,6 +3,7 @@
 
 ## Choose Setup
 vbr_download: false
+vbr_license: false
 vbr_setup: false
 vbr_update: false
 one_setup: false
@@ -17,6 +18,8 @@ vbr_url: "https://download2.veeam.com/VeeamBackup&Replication_9.5.4.2615.Update4
 vbr_checksum: "8a594cec74059f9929ea765ac5e70a49da6fc93803b567cbb9d74fbb1a49a6cc"
 vbr_destination: "C:\\install\\"
 vbr_destination_file: "vbr.iso"
+vbr_destination_license: "license.lic"
+vbr_source_license: "/data/license.lic"
 vbr_source: "D:\\"
 vbr_username: "svc_vbr"
 vbr_userpassword: "ChangeM3!"
