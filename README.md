@@ -37,6 +37,10 @@ An Ansible Role to install and update [Veeam](https://www.veeam.com) components 
 - one_setup - Version 0.4
   - Run SQL Express Setup in RunAs-Mode
 
+### Version 0.6
+- vbr_setup - Version 0.4
+  - License File can be applied during setup
+
 ## Requirements
 
 none
@@ -51,6 +55,7 @@ Available variables are listed below, along with default values (see `defaults/m
 
 ## Choose Setup
 vbr_download: false
+vbr_license: false
 vbr_setup: false
 vbr_update: false
 one_setup: false
@@ -65,6 +70,8 @@ vbr_url: "https://download2.veeam.com/VeeamBackup&Replication_9.5.4.2615.Update4
 vbr_checksum: "8a594cec74059f9929ea765ac5e70a49da6fc93803b567cbb9d74fbb1a49a6cc"
 vbr_destination: "C:\\install\\"
 vbr_destination_file: "vbr.iso"
+vbr_destination_license: "license.lic"
+vbr_source_license: "/data/license.lic"
 vbr_source: "D:\\"
 vbr_username: "svc_vbr"
 vbr_userpassword: "ChangeM3!"
@@ -84,12 +91,33 @@ none
 ### Veeam Backup & Replication Setup with local Download
 
 ```yaml
+- name: Veeam Backup & Replication v10 RTM Setup
+  hosts: veeam
+  gather_facts: no
+  vars:
+    vbr_download: false
+    vbr_setup: true
+    vbr_license: true
+    vbr_source_license: "/root/ansible/license.lic"
+    vbr_source: "E:\\"
+    vbr_update: false
+    one_setup: false
+    one_source: "D:\\"
+    one_update: false
+  roles:
+    - veeam_setup
+```
+
+### Veeam Backup & Replication Community Edition Setup with local Download
+
+```yaml
 - name: Veeam Backup & Replication v10 Community Edition Setup
   hosts: veeam
   gather_facts: no
   vars:
     vbr_download: true
     vbr_setup: true
+    vbr_license: false
     vbr_update: false
     one_setup: false
     one_update: false
@@ -97,7 +125,7 @@ none
     - veeam_setup
 ```
 
-### Veeam Backup & Replication Setup without local Download
+### Veeam Backup & Replication Community Edition Setup without local Download
 
 ```yaml
 - name: Veeam Backup & Replication v10 Community Edition Setup
@@ -106,6 +134,7 @@ none
   vars:
     vbr_download: false
     vbr_setup: true
+    vbr_license: false
     vbr_update: false
     one_setup: false
     one_update: false
@@ -113,7 +142,7 @@ none
     - veeam_setup
 ```
 
-### Veeam ONE Setup
+### Veeam ONE Free Edition Setup
 
 ```yaml
 - name: Veeem ONE v10 Free Edition Setup

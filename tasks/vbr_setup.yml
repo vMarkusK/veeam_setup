@@ -1,5 +1,15 @@
 ---
 # vbr_setup tasks file for veeam_setup
+- name: Pre - Create license directory
+  win_file:
+    path: "{{ vbr_destination }}"
+    state: directory
+  when: vbr_license | bool
+- name: Pre - Copy license file
+  win_copy:
+    src: "{{vbr_source_license}}"
+    dest: "{{ vbr_destination }}{{vbr_destination_license}}"
+  when: vbr_license | bool
 - name: Pre - Install 2012 System CLR Types
   win_package:
     path: "{{ vbr_source }}Redistr\\x64\\SQLSysClrTypes.msi"
@@ -55,11 +65,21 @@
     arguments:
         - 'VBRC_SERVICE_ACCOUNT_TYPE=1'
         - 'ACCEPT_THIRDPARTY_LICENSES=1'
-- name: Install VBR Server
+  register: win_package_vbr_catalog
+- name: Install VBR Server with license
+  win_package:
+    path: "{{ vbr_source }}Backup\\Server.x64.msi"
+    state: present
+    arguments: "VBR_LICENSE_FILE={{ vbr_destination }}{{vbr_destination_license}} VBR_SERVICE_ACCOUNT_TYPE=1 VBR_SQLSERVER_AUTHENTICATION=1 VBR_SQLSERVER_SERVER=(local)\\VEEAMSQL2016 VBR_SQLSERVER_USERNAME=sa VBR_SQLSERVER_PASSWORD={{ sql_sapassword }} ACCEPT_THIRDPARTY_LICENSES=1 ACCEPTEULA=YES"
+  when: vbr_license | bool
+  register: win_package_vbr_server
+- name: Install VBR Server without license
   win_package:
     path: "{{ vbr_source }}Backup\\Server.x64.msi"
     state: present
     arguments: "VBR_SERVICE_ACCOUNT_TYPE=1 VBR_SQLSERVER_AUTHENTICATION=1 VBR_SQLSERVER_SERVER=(local)\\VEEAMSQL2016 VBR_SQLSERVER_USERNAME=sa VBR_SQLSERVER_PASSWORD={{ sql_sapassword }} ACCEPT_THIRDPARTY_LICENSES=1 ACCEPTEULA=YES"
+  when: not vbr_license | bool
+  register: win_package_vbr_server
 - name: Install VBR Console
   win_package:
     path: "{{ vbr_source }}Backup\\Shell.x64.msi"
@@ -67,6 +87,7 @@
     arguments:
         - 'ACCEPTEULA=YES'
         - 'ACCEPT_THIRDPARTY_LICENSES=1'
+  register: win_package_vbr_console
 - name: Install VBR Explorer for ActiveDirectory
   win_package:
     path: "{{ vbr_source }}Explorers\\VeeamExplorerForActiveDirectory.msi"
