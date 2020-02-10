@@ -7,9 +7,14 @@ vbr_license: false
 vbr_setup: false
 vbr_update: false
 one_setup: false
+one_license: false
+one_update: false
 
 ## VBR Parameters
 one_source: "E:\\"
+one_destination: "C:\\install\\"
+one_destination_license: "license.lic"
+one_source_license: "/data/license.lic"
 one_username: "svc_one"
 one_userpassword: "ChangeM3!"
 one_update_file: "VeeamONE_9.5.4.4587_Update#4a.exe"
