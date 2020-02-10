@@ -41,6 +41,10 @@ An Ansible Role to install and update [Veeam](https://www.veeam.com) components 
 - vbr_setup - Version 0.4
   - License File can be applied during setup
 
+### Version 0.7
+- one_setup - Version 0.5
+  - License File can be applied during setup
+
 ## Requirements
 
 none
@@ -59,9 +63,14 @@ vbr_license: false
 vbr_setup: false
 vbr_update: false
 one_setup: false
+one_license: false
+one_update: false
 
 ## VBR Parameters
 one_source: "E:\\"
+one_destination: "C:\\install\\"
+one_destination_license: "license.lic"
+one_source_license: "/data/license.lic"
 one_username: "svc_one"
 one_userpassword: "ChangeM3!"
 one_update_file: "VeeamONE_9.5.4.4587_Update#4a.exe"
@@ -142,10 +151,32 @@ none
     - veeam_setup
 ```
 
+### Veeam ONE Setup
+
+```yaml
+- name: Veeem ONE v10 RTM Setup
+  hosts: veeam
+  gather_facts: no
+  vars:
+    vbr_download: false
+    vbr_setup: false
+    vbr_license: false
+    vbr_source_license: "/root/ansible/license.lic"
+    vbr_source: "E:\\"
+    vbr_update: false
+    one_setup: true
+    one_license: true
+    one_source_license: "/root/ansible/license.lic"
+    one_source: "D:\\"
+    one_update: false
+  roles:
+    - veeam_setup
+```
+
 ### Veeam ONE Free Edition Setup
 
 ```yaml
-- name: Veeem ONE v10 Free Edition Setup
+- name: Veeem ONE v10 RTM Free Edition Setup
   hosts: veeam
   gather_facts: no
   vars:
