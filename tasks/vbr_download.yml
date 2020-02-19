@@ -11,6 +11,10 @@
     checksum: "{{ vbr_checksum }}"
     checksum_algorithm: sha256
     force: false
+  register: win_get_url_out
+- name: Debug win_get_url
+  debug:
+      var: win_get_url_out
 - name: Mount VBR ISO
   win_disk_image:
     image_path: "{{ vbr_destination }}{{ vbr_destination_file }}"
