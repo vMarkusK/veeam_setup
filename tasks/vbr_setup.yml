@@ -3,6 +3,7 @@
 - name: Debug
   debug:
     msg: 
+      - "Installation Source: '{{ vbr_source }}'"
       - "Local Service User: '{{ vbr_username }}'"
       - "License File Destination: '{{ vbr_destination }}{{vbr_destination_license}}'"
       - "SQL Server Instance: '{{ vbr_sql_instance }}'"

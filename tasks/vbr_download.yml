@@ -12,7 +12,7 @@
     checksum_algorithm: sha256
     force: false
   register: win_get_url_out
-- name: Debug win_get_url
+- name: Debug Download Result
   debug:
       var: win_get_url_out
 - name: Mount VBR ISO
@@ -20,6 +20,6 @@
     image_path: "{{ vbr_destination }}{{ vbr_destination_file }}"
     state: present
   register: disk_image_out
-- name: Set VBR Soure Fact
+- name: Set VBR Source Fact
   set_fact:
     vbr_source: "{{ disk_image_out.mount_paths[0] }}"
