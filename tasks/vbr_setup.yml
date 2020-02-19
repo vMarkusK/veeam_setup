@@ -3,9 +3,9 @@
 - name: Debug
   debug:
     msg: 
-      - "vbr_destination is {{ vbr_destination }}"
-      - "vbr_destination_license is {{ vbr_destination_license }}"
-      - "vbr_sql_instance is {{ vbr_sql_instance }}"
+      - "Local Service User: '{{ vbr_username }}'"
+      - "License File Destination: '{{ vbr_destination }}{{vbr_destination_license}}'"
+      - "SQL Server Instance: '{{ vbr_sql_instance }}'"
 - name: Pre - Create license directory
   win_file:
     path: "{{ vbr_destination }}"
