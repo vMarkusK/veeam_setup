@@ -45,9 +45,53 @@ An Ansible Role to install and update [Veeam](https://www.veeam.com) components 
 - one_setup - Version 0.5
   - License File can be applied during setup
 
+### Version 0.8
+- one_setup - Version 0.6
+  - SQL Setup is optionally
+  - SQL Instance can be configured (e.g. Remote SQL Server)
+  - Minor Debug enhancements
+
+- vbr_setup - Version 0.5
+  - SQL Setup is optionally
+  - SQL Instance can be configured (e.g. Remote SQL Server)
+  - Minor Debug enhancements
+
+- vbr_download - Version 0.2
+  - Add Debug
+  - v10 GA ISO and Checksum in the defaults
+
 ## Requirements
 
-none
+### Hardware 
+
+CPU: x86-64 processor
+
+Memory: 2 GB RAM
+
+Disk Space: 500 MB for product installation and 4 GB for ISO Download.
+
+Network: 1 Mbps connection to the backup server
+
+## OS
+
+Only 64-bit version of the following operating systems are supported:
+
+- Microsoft Windows Server 2016
+- Microsoft Windows Server 2012 R2
+- Microsoft Windows Server 2019
+- Microsoft Windows Server 2012
+- Microsoft Windows Server 2008 R2 SP1
+- Microsoft Windows 10 (version 1607 to 1909)
+- Microsoft Windows 8.1
+- Microsoft Windows 7 SP1
+
+#### Pre Windows 2019 notes
+
+This role does not cover the Setup os these Veeam Backup & Replication 10 requirements:
+
+- Microsoft .NET Framework 4.7.2 (included in the setup)
+- Windows Installer 4.5 (included in the setup)
+- Microsoft PowerShell 2.0 (included in the setup)
 
 ## Role Variables
 
@@ -73,10 +117,10 @@ one_destination_license: "license.lic"
 one_source_license: "/data/license.lic"
 one_username: "svc_one"
 one_userpassword: "ChangeM3!"
-one_update_file: "VeeamONE_9.5.4.4587_Update#4a.exe"
-one_update_id: "Veeam ONE Update 4a"
-vbr_url: "https://download2.veeam.com/VeeamBackup&Replication_9.5.4.2615.Update4.iso"
-vbr_checksum: "8a594cec74059f9929ea765ac5e70a49da6fc93803b567cbb9d74fbb1a49a6cc"
+one_update_file: "" #VeeamONE_9.5.4.4587_Update#4a.exe
+one_update_id: "" #Veeam ONE Update 4a
+vbr_url: "https://download2.veeam.com/VeeamBackup&Replication_10.0.0.4461.iso"
+vbr_checksum: "26ddcc3df046af1ca1458b3040fc9024b4361ae1e51e1cf4516afe53fb024650"
 vbr_destination: "C:\\install\\"
 vbr_destination_file: "vbr.iso"
 vbr_destination_license: "license.lic"
@@ -84,8 +128,10 @@ vbr_source_license: "/data/license.lic"
 vbr_source: "D:\\"
 vbr_username: "svc_vbr"
 vbr_userpassword: "ChangeM3!"
-vbr_update_file: "veeam_backup_9.5.4.2866.update4b_setup.exe"
-vbr_update_id: "Veeam VBR Update 4b"
+vbr_update_file: "" #veeam_backup_9.5.4.2866.update4b_setup.exe
+vbr_update_id: "" #Veeam VBR Update 4b
+sql_setup: true
+sql_instance: "(local)\\VEEAMSQL2016"
 sql_username: "svc_sql"
 sql_userpassword: "ChangeM3!"
 sql_sapassword: "ChangeM3!"
@@ -100,7 +146,7 @@ none
 ### Veeam Backup & Replication Setup with local Download
 
 ```yaml
-- name: Veeam Backup & Replication v10 RTM Setup
+- name: Veeam Backup & Replication v10 GA Setup
   hosts: veeam
   gather_facts: no
   vars:
@@ -128,6 +174,25 @@ none
     vbr_setup: true
     vbr_license: false
     vbr_update: false
+    one_setup: false
+    one_update: false
+  roles:
+    - veeam_setup
+```
+
+### Veeam Backup & Replication Community Edition Setup with local Download and remote SQL
+
+```yaml
+- name: Veeam Backup & Replication v10 Community Edition Setup with remote SQL
+  hosts: veeam
+  gather_facts: no
+  vars:
+    vbr_download: true
+    vbr_setup: true
+    vbr_license: false
+    vbr_update: false
+    sql_setup: false
+    sql_instance: "SQL001\\VEEAM"
     one_setup: false
     one_update: false
   roles:

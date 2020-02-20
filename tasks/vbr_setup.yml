@@ -1,5 +1,12 @@
 ---
 # vbr_setup tasks file for veeam_setup
+- name: Debug
+  debug:
+    msg: 
+      - "Installation Source: '{{ vbr_source }}'"
+      - "Local Service User: '{{ vbr_username }}'"
+      - "License File Destination: '{{ vbr_destination }}{{vbr_destination_license}}'"
+      - "SQL Server Instance: '{{ sql_instance }}'"
 - name: Pre - Create license directory
   win_file:
     path: "{{ vbr_destination }}"
@@ -58,6 +65,7 @@
     ansible_become_method: runas
     ansible_become_user: "{{ vbr_username }}"
     ansible_become_pass: "{{ vbr_userpassword }}"
+  when: sql_setup | bool
 - name: Install VBR Catalog
   win_package:
     path: "{{ vbr_source }}Catalog\\VeeamBackupCatalog64.msi"
@@ -70,14 +78,14 @@
   win_package:
     path: "{{ vbr_source }}Backup\\Server.x64.msi"
     state: present
-    arguments: "VBR_LICENSE_FILE={{ vbr_destination }}{{vbr_destination_license}} VBR_SERVICE_ACCOUNT_TYPE=1 VBR_SQLSERVER_AUTHENTICATION=1 VBR_SQLSERVER_SERVER=(local)\\VEEAMSQL2016 VBR_SQLSERVER_USERNAME=sa VBR_SQLSERVER_PASSWORD={{ sql_sapassword }} ACCEPT_THIRDPARTY_LICENSES=1 ACCEPTEULA=YES"
+    arguments: "VBR_LICENSE_FILE={{ vbr_destination }}{{vbr_destination_license}} VBR_SERVICE_ACCOUNT_TYPE=1 VBR_SQLSERVER_AUTHENTICATION=1 VBR_SQLSERVER_SERVER={{ sql_instance }} VBR_SQLSERVER_USERNAME=sa VBR_SQLSERVER_PASSWORD={{ sql_sapassword }} ACCEPT_THIRDPARTY_LICENSES=1 ACCEPTEULA=YES"
   when: vbr_license | bool
   register: win_package_vbr_server
 - name: Install VBR Server without license
   win_package:
     path: "{{ vbr_source }}Backup\\Server.x64.msi"
     state: present
-    arguments: "VBR_SERVICE_ACCOUNT_TYPE=1 VBR_SQLSERVER_AUTHENTICATION=1 VBR_SQLSERVER_SERVER=(local)\\VEEAMSQL2016 VBR_SQLSERVER_USERNAME=sa VBR_SQLSERVER_PASSWORD={{ sql_sapassword }} ACCEPT_THIRDPARTY_LICENSES=1 ACCEPTEULA=YES"
+    arguments: "VBR_SERVICE_ACCOUNT_TYPE=1 VBR_SQLSERVER_AUTHENTICATION=1 VBR_SQLSERVER_SERVER={{ sql_instance }} VBR_SQLSERVER_USERNAME=sa VBR_SQLSERVER_PASSWORD={{ sql_sapassword }} ACCEPT_THIRDPARTY_LICENSES=1 ACCEPTEULA=YES"
   when: not vbr_license | bool
   register: win_package_vbr_server
 - name: Install VBR Console
