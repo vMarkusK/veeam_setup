@@ -68,7 +68,7 @@ CPU: x86-64 processor
 
 Memory: 2 GB RAM
 
-Disk Space: 500 MB for product installation and 4 GB for ISO Download.
+Disk Space: 500 MB for product installation and 4 GB for optional ISO Download.
 
 Network: 1 Mbps connection to the backup server
 
@@ -78,20 +78,20 @@ Only 64-bit version of the following operating systems are supported:
 
 - Microsoft Windows Server 2016
 - Microsoft Windows Server 2012 R2
-- Microsoft Windows Server 2019
+- Microsoft Windows Server 2019 (fully tested with this Role)
 - Microsoft Windows Server 2012
 - Microsoft Windows Server 2008 R2 SP1
 - Microsoft Windows 10 (version 1607 to 1909)
 - Microsoft Windows 8.1
 - Microsoft Windows 7 SP1
 
-#### Pre Windows 2019 notes
+#### Pre Windows 2019 requirements
 
 This role does not cover the Setup os these Veeam Backup & Replication 10 requirements:
 
-- Microsoft .NET Framework 4.7.2 (included in the setup)
-- Windows Installer 4.5 (included in the setup)
-- Microsoft PowerShell 2.0 (included in the setup)
+- Microsoft .NET Framework 4.7.2 (included in the ISO)
+- Windows Installer 4.5 (included in the ISO)
+- Microsoft PowerShell 2.0 (included in the ISO)
 
 ## Role Variables
 
