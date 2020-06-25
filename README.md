@@ -1,4 +1,5 @@
 # veeam_setup
+![Ansible Lint](https://github.com/vMarkusK/veeam_setup/workflows/Ansible%20Lint/badge.svg)
 
 An Ansible Role to install and update [Veeam](https://www.veeam.com) components (Veeam Backup & Replication / Veeam ONE) on Windows.
 
@@ -12,7 +13,7 @@ An Ansible Role to install and update [Veeam](https://www.veeam.com) components 
 
 - vbr_setup - Version 0.1
 
-- vbr_update - Version 0.1
+- vbr_update - Version 0.2
 
 ### Version 0.2
 - one_setup - Version 0.2
@@ -59,6 +60,13 @@ An Ansible Role to install and update [Veeam](https://www.veeam.com) components 
 - vbr_download - Version 0.2
   - Add Debug
   - v10 GA ISO and Checksum in the defaults
+
+### Version 0.9
+- vbr_update - Version 0.2
+  - Latest Patch
+
+- General 
+  - Fix sime Lint findings
 
 ## Requirements
 
