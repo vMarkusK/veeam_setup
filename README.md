@@ -13,7 +13,7 @@ An Ansible Role to install and update [Veeam](https://www.veeam.com) components 
 
 - vbr_setup - Version 0.1
 
-- vbr_update - Version 0.2
+- vbr_update - Version 0.1
 
 ### Version 0.2
 - one_setup - Version 0.2
@@ -136,8 +136,8 @@ vbr_source_license: "/data/license.lic"
 vbr_source: "D:\\"
 vbr_username: "svc_vbr"
 vbr_userpassword: "ChangeM3!"
-vbr_update_file: "" #veeam_backup_9.5.4.2866.update4b_setup.exe
-vbr_update_id: "" #Veeam VBR Update 4b
+vbr_update_file: "veeam_backup_10.0.0.4461.CumulativePatch_KB3161.exe" #veeam_backup_9.5.4.2866.update4b_setup.exe
+vbr_update_id: "KB3161" #Veeam VBR Update 4b
 sql_setup: true
 sql_instance: "(local)\\VEEAMSQL2016"
 sql_username: "svc_sql"
@@ -154,7 +154,7 @@ none
 ### Veeam Backup & Replication Setup with local Download
 
 ```yaml
-- name: Veeam Backup & Replication v10 GA Setup
+- name: Veeam Backup & Replication v10 Setup
   hosts: veeam
   gather_facts: no
   vars:
@@ -163,7 +163,7 @@ none
     vbr_license: true
     vbr_source_license: "/root/ansible/license.lic"
     vbr_source: "E:\\"
-    vbr_update: false
+    vbr_update: true
     one_setup: false
     one_source: "D:\\"
     one_update: false
