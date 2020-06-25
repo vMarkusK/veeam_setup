@@ -133,7 +133,7 @@
     path: "{{ one_source }}Monitor\\VeeamONE.Monitor.Server.x64.msi"
     state: present
     # Veean Documentation wrong, VM_VC_SELECTED_TYPE=2 is not default!
-    arguments: "EDITLICFILEPATH={{ one_destination }}{{one_destination_license }} ACCEPT_THIRDPARTY_LICENSES=1 ACCEPT_EULA=1 VM_MN_SERVICEACCOUNT={{ one_username }} VM_MN_SERVICEPASSWORD={{ one_userpassword }} VM_MN_SQL_SERVER={{ sql_instance }} VM_MN_SQL_AUTHENTICATION=1 VM_MN_SQL_USER=sa VM_MN_SQL_PASSWORD={{ sql_sapassword }} VM_BACKUP_ADD_LATER=1 VM_VC_SELECTED_TYPE=2"
+    arguments: "EDITLICFILEPATH={{ one_destination }}{{ one_destination_license }} ACCEPT_THIRDPARTY_LICENSES=1 ACCEPT_EULA=1 VM_MN_SERVICEACCOUNT={{ one_username }} VM_MN_SERVICEPASSWORD={{ one_userpassword }} VM_MN_SQL_SERVER={{ sql_instance }} VM_MN_SQL_AUTHENTICATION=1 VM_MN_SQL_USER=sa VM_MN_SQL_PASSWORD={{ sql_sapassword }} VM_BACKUP_ADD_LATER=1 VM_VC_SELECTED_TYPE=2"
   when: one_license | bool
   register: win_package_one_monitor_server
 - name: Install ONE Monitor Server without license file
