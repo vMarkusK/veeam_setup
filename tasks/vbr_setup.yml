@@ -5,7 +5,7 @@
     msg: 
       - "Installation Source: '{{ vbr_source }}'"
       - "Local Service User: '{{ vbr_username }}'"
-      - "License File Destination: '{{ vbr_destination }}{{vbr_destination_license}}'"
+      - "License File Destination: '{{ vbr_destination }}{{ vbr_destination_license }}'"
       - "SQL Server Instance: '{{ sql_instance }}'"
 - name: Pre - Create license directory
   win_file:
@@ -14,8 +14,8 @@
   when: vbr_license | bool
 - name: Pre - Copy license file
   win_copy:
-    src: "{{vbr_source_license}}"
-    dest: "{{ vbr_destination }}{{vbr_destination_license}}"
+    src: "{{ vbr_source_license }}"
+    dest: "{{ vbr_destination }}{{ vbr_destination_license }}"
   when: vbr_license | bool
 - name: Pre - Install 2012 System CLR Types
   win_package:
@@ -78,7 +78,7 @@
   win_package:
     path: "{{ vbr_source }}Backup\\Server.x64.msi"
     state: present
-    arguments: "VBR_LICENSE_FILE={{ vbr_destination }}{{vbr_destination_license}} VBR_SERVICE_ACCOUNT_TYPE=1 VBR_SQLSERVER_AUTHENTICATION=1 VBR_SQLSERVER_SERVER={{ sql_instance }} VBR_SQLSERVER_USERNAME=sa VBR_SQLSERVER_PASSWORD={{ sql_sapassword }} ACCEPT_THIRDPARTY_LICENSES=1 ACCEPTEULA=YES"
+    arguments: "VBR_LICENSE_FILE={{ vbr_destination }}{{ vbr_destination_license }} VBR_SERVICE_ACCOUNT_TYPE=1 VBR_SQLSERVER_AUTHENTICATION=1 VBR_SQLSERVER_SERVER={{ sql_instance }} VBR_SQLSERVER_USERNAME=sa VBR_SQLSERVER_PASSWORD={{ sql_sapassword }} ACCEPT_THIRDPARTY_LICENSES=1 ACCEPTEULA=YES"
   when: vbr_license | bool
   register: win_package_vbr_server
 - name: Install VBR Server without license
