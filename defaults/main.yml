@@ -28,8 +28,8 @@ vbr_source_license: "/data/license.lic"
 vbr_source: "D:\\"
 vbr_username: "svc_vbr"
 vbr_userpassword: "ChangeM3!"
-vbr_update_file: "" #veeam_backup_9.5.4.2866.update4b_setup.exe
-vbr_update_id: "" #Veeam VBR Update 4b
+vbr_update_file: "veeam_backup_10.0.0.4461.CumulativePatch_KB3161.exe" #veeam_backup_9.5.4.2866.update4b_setup.exe
+vbr_update_id: "KB3161" #Veeam VBR Update 4b
 sql_setup: true
 sql_instance: "(local)\\VEEAMSQL2016"
 sql_username: "svc_sql"
