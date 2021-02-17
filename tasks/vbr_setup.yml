@@ -7,7 +7,7 @@
       - "Local Service User: '{{ vbr_username }}'"
       - "License File Destination: '{{ vbr_destination }}{{ vbr_destination_license }}'"
       - "SQL Server Instance: '{{ sql_instance }}'"
-- name: Pre - Create license directory
+- name: Pre - Create license and setup directory
   win_file:
     path: "{{ vbr_destination }}"
     state: directory
@@ -17,13 +17,24 @@
     src: "{{ vbr_source_license }}"
     dest: "{{ vbr_destination }}{{ vbr_destination_license }}"
   when: vbr_license | bool
-- name: Pre - Install 2012 System CLR Types
+- name: Pre - Install 2014 System CLR Types
   win_package:
     path: "{{ vbr_source }}Redistr\\x64\\SQLSysClrTypes.msi"
     state: present
-- name: Pre - Install 2012 Shared management objects
+- name: Pre - Install 2014 Shared management objects
   win_package:
     path: "{{ vbr_source }}Redistr\\x64\\SharedManagementObjects.msi"
+    state: present
+- name: Pre - Install Microsoft Universal C Runtime
+  win_package:
+    path: "{{ vbr_source }}Redistr\\x64\\vc_redist.x64.exe"
+    arguments:
+    - /install 
+    - /passive 
+    - /norestart
+- name: Pre - Install ReportViewer
+  win_package:
+    path: "{{ one_source }}Redistr\\ReportViewer.msi"
     state: present
 - name: Pre - Create Local Service and RunAs User
   win_user:
@@ -71,21 +82,20 @@
     path: "{{ vbr_source }}Catalog\\VeeamBackupCatalog64.msi"
     state: present
     arguments:
-        - 'VBRC_SERVICE_ACCOUNT_TYPE=1'
         - 'ACCEPT_THIRDPARTY_LICENSES=1'
   register: win_package_vbr_catalog
 - name: Install VBR Server with license
   win_package:
     path: "{{ vbr_source }}Backup\\Server.x64.msi"
     state: present
-    arguments: "VBR_LICENSE_FILE={{ vbr_destination }}{{ vbr_destination_license }} VBR_SERVICE_ACCOUNT_TYPE=1 VBR_SQLSERVER_AUTHENTICATION=1 VBR_SQLSERVER_SERVER={{ sql_instance }} VBR_SQLSERVER_USERNAME=sa VBR_SQLSERVER_PASSWORD={{ sql_sapassword }} ACCEPT_THIRDPARTY_LICENSES=1 ACCEPTEULA=YES"
+    arguments: "VBR_LICENSE_FILE={{ vbr_destination }}{{ vbr_destination_license }} VBR_SQLSERVER_AUTHENTICATION=1 VBR_SQLSERVER_SERVER={{ sql_instance }} VBR_SQLSERVER_USERNAME=sa VBR_SQLSERVER_PASSWORD={{ sql_sapassword }} ACCEPT_THIRDPARTY_LICENSES=1 ACCEPTEULA=YES"
   when: vbr_license | bool
   register: win_package_vbr_server
 - name: Install VBR Server without license
   win_package:
     path: "{{ vbr_source }}Backup\\Server.x64.msi"
     state: present
-    arguments: "VBR_SERVICE_ACCOUNT_TYPE=1 VBR_SQLSERVER_AUTHENTICATION=1 VBR_SQLSERVER_SERVER={{ sql_instance }} VBR_SQLSERVER_USERNAME=sa VBR_SQLSERVER_PASSWORD={{ sql_sapassword }} ACCEPT_THIRDPARTY_LICENSES=1 ACCEPTEULA=YES"
+    arguments: "VBR_SQLSERVER_AUTHENTICATION=1 VBR_SQLSERVER_SERVER={{ sql_instance }} VBR_SQLSERVER_USERNAME=sa VBR_SQLSERVER_PASSWORD={{ sql_sapassword }} ACCEPT_THIRDPARTY_LICENSES=1 ACCEPTEULA=YES"
   when: not vbr_license | bool
   register: win_package_vbr_server
 - name: Install VBR Console
