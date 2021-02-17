@@ -8,32 +8,25 @@
       - "License File Destination: '{{ vbr_destination }}{{ vbr_destination_license }}'"
       - "SQL Server Instance: '{{ sql_instance }}'"
 - name: Pre - Create license and setup directory
-  win_file:
+  ansible.windows.win_file:
     path: "{{ vbr_destination }}"
     state: directory
   when: vbr_license | bool
 - name: Pre - Copy license file
-  win_copy:
+  ansible.windows.win_copy:
     src: "{{ vbr_source_license }}"
     dest: "{{ vbr_destination }}{{ vbr_destination_license }}"
   when: vbr_license | bool
 - name: Pre - Install 2014 System CLR Types
-  win_package:
+  ansible.windows.win_package:
     path: "{{ vbr_source }}Redistr\\x64\\SQLSysClrTypes.msi"
     state: present
 - name: Pre - Install 2014 Shared management objects
-  win_package:
+  ansible.windows.win_package:
     path: "{{ vbr_source }}Redistr\\x64\\SharedManagementObjects.msi"
     state: present
-- name: Pre - Install Microsoft Universal C Runtime
-  win_package:
-    path: "{{ vbr_source }}Redistr\\x64\\vc_redist.x64.exe"
-    arguments:
-    - /install 
-    - /passive 
-    - /norestart
 - name: Pre - Install ReportViewer
-  win_package:
+  ansible.windows.win_package:
     path: "{{ one_source }}Redistr\\ReportViewer.msi"
     state: present
 - name: Pre - Create Local Service and RunAs User
@@ -45,7 +38,7 @@
     groups:
         - Administrators
 - name: SQL - Create Local SQL User
-  win_user:
+  ansible.windows.win_user:
     name: "{{ sql_username }}"
     password: "{{ sql_userpassword }}"
     password_never_expires: yes
@@ -53,7 +46,7 @@
     groups:
         - Users
 - name: SQL - Install SQL Express 2016 SP2 
-  win_package:
+  ansible.windows.win_package:
     path: "{{ vbr_source }}Redistr\\x64\\SqlExpress\\2016SP2\\SQLEXPR_x64_ENU.exe"
     product_id: SQL 2016 Express
     arguments: 
@@ -78,64 +71,64 @@
     ansible_become_pass: "{{ vbr_userpassword }}"
   when: sql_setup | bool
 - name: Install VBR Catalog
-  win_package:
+  ansible.windows.win_package:
     path: "{{ vbr_source }}Catalog\\VeeamBackupCatalog64.msi"
     state: present
     arguments:
         - 'ACCEPT_THIRDPARTY_LICENSES=1'
-  register: win_package_vbr_catalog
+  register: ansible.windows.win_package_vbr_catalog
 - name: Install VBR Server with license
-  win_package:
+  ansible.windows.win_package:
     path: "{{ vbr_source }}Backup\\Server.x64.msi"
     state: present
     arguments: "VBR_LICENSE_FILE={{ vbr_destination }}{{ vbr_destination_license }} VBR_SQLSERVER_AUTHENTICATION=1 VBR_SQLSERVER_SERVER={{ sql_instance }} VBR_SQLSERVER_USERNAME=sa VBR_SQLSERVER_PASSWORD={{ sql_sapassword }} ACCEPT_THIRDPARTY_LICENSES=1 ACCEPTEULA=YES"
   when: vbr_license | bool
-  register: win_package_vbr_server
+  register: ansible.windows.win_package_vbr_server
 - name: Install VBR Server without license
-  win_package:
+  ansible.windows.win_package:
     path: "{{ vbr_source }}Backup\\Server.x64.msi"
     state: present
     arguments: "VBR_SQLSERVER_AUTHENTICATION=1 VBR_SQLSERVER_SERVER={{ sql_instance }} VBR_SQLSERVER_USERNAME=sa VBR_SQLSERVER_PASSWORD={{ sql_sapassword }} ACCEPT_THIRDPARTY_LICENSES=1 ACCEPTEULA=YES"
   when: not vbr_license | bool
-  register: win_package_vbr_server
+  register: ansible.windows.win_package_vbr_server
 - name: Install VBR Console
-  win_package:
+  ansible.windows.win_package:
     path: "{{ vbr_source }}Backup\\Shell.x64.msi"
     state: present
     arguments:
         - 'ACCEPTEULA=YES'
         - 'ACCEPT_THIRDPARTY_LICENSES=1'
-  register: win_package_vbr_console
+  register: ansible.windows.win_package_vbr_console
 - name: Install VBR Explorer for ActiveDirectory
-  win_package:
+  ansible.windows.win_package:
     path: "{{ vbr_source }}Explorers\\VeeamExplorerForActiveDirectory.msi"
     state: present
     arguments:
         - 'ACCEPT_EULA=1'
         - 'ACCEPT_THIRDPARTY_LICENSES=1'
 - name: Install VBR Explorer for Exchange
-  win_package:
+  ansible.windows.win_package:
     path: "{{ vbr_source }}Explorers\\VeeamExplorerForExchange.msi"
     state: present
     arguments:
         - 'ACCEPT_EULA=1'
         - 'ACCEPT_THIRDPARTY_LICENSES=1'
 - name: Install VBR Explorer for Oracle
-  win_package:
+  ansible.windows.win_package:
     path: "{{ vbr_source }}Explorers\\VeeamExplorerForOracle.msi"
     state: present
     arguments:
         - 'ACCEPT_EULA=1'
         - 'ACCEPT_THIRDPARTY_LICENSES=1'
 - name: Install VBR Explorer for SharePoint
-  win_package:
+  ansible.windows.win_package:
     path: "{{ vbr_source }}Explorers\\VeeamExplorerForSharePoint.msi"
     state: present
     arguments:
         - 'ACCEPT_EULA=1'
         - 'ACCEPT_THIRDPARTY_LICENSES=1'
 - name: Install VBR Explorer for SQL
-  win_package:
+  ansible.windows.win_package:
     path: "{{ vbr_source }}Explorers\\VeeamExplorerForSQL.msi"
     state: present
     arguments:
