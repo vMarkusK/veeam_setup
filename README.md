@@ -73,6 +73,10 @@ An Ansible Role to install and update [Veeam](https://www.veeam.com) components 
   - v11 RTM
   - Switch to win collection
 
+- one_setup
+  - v11 RTM
+  - Switch to win collection
+
 ## Requirements
 
 ### Hardware 
