@@ -9,10 +9,11 @@ galaxy_info:
     versions:
      - 2019
      - 2016
-     - 2012R2
   galaxy_tags: 
     - veeam
     - server
     - system
     - backup
-dependencies: []
+  dependencies:
+    collections:
+    - name: ansible.windows
