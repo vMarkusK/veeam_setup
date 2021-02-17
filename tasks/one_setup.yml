@@ -8,12 +8,12 @@
       - "License File Destination: '{{ one_destination }}{{ one_destination_license }}'"
       - "SQL Server Instance: '{{ sql_instance }}'"
 - name: Pre - Create license directory
-  win_file:
+  ansible.windows.win_file:
     path: "{{ one_destination }}"
     state: directory
   when: one_license | bool
 - name: Pre - Copy license file
-  win_copy:
+  ansible.windows.win_copy:
     src: "{{ one_source_license }}"
     dest: "{{ one_destination }}{{ one_destination_license }}"
   when: one_license | bool
@@ -61,7 +61,7 @@
     state: present
     enabled: yes
 - name: Pre - Create Local Veeam ONE Service User
-  win_user:
+  ansible.windows.win_user:
     name: "{{ one_username }}"
     password: "{{ one_userpassword }}"
     password_never_expires: yes
@@ -69,42 +69,42 @@
     groups:
         - Administrators
 - name: Pre - Create Local SQL Service User
-  win_user:
+  ansible.windows.win_user:
     name: "{{ sql_username }}"
     password: "{{ sql_userpassword }}"
     password_never_expires: yes
     state: present
     groups:
         - Users
-- name: Pre - Install 2012 System CLR Types
-  win_package:
+- name: Pre - Install 2014 System CLR Types
+  ansible.windows.win_package:
     path: "{{ one_source }}Redistr\\x64\\SQLSysClrTypes.msi"
     state: present
-- name: Pre - Install 2012 Shared management objects
-  win_package:
+- name: Pre - Install 2014 Shared management objects
+  ansible.windows.win_package:
     path: "{{ one_source }}Redistr\\x64\\SharedManagementObjects.msi"
     state: present
 - name: Pre - Install XML Parser
-  win_package:
+  ansible.windows.win_package:
     path: "{{ one_source }}Redistr\\x64\\msxml6_x64.msi"
     state: present
 - name: Pre - Install SQL Native Client
-  win_package:
+  ansible.windows.win_package:
     path: "{{ one_source }}Redistr\\x64\\sqlncli.msi"
     state: present
     arguments: "IACCEPTSQLNCLILICENSETERMS=YES"
 - name: Pre - Install ReportViewer
-  win_package:
+  ansible.windows.win_package:
     path: "{{ one_source }}Redistr\\ReportViewer.msi"
     state: present
 - name: Pre - Install IIS
-  win_feature:
+  ansible.windows.win_feature:
     name: Web-Server
     state: present
     include_sub_features: yes
     include_management_tools: yes
 - name: Pre - Install SQL 2016 Express
-  win_package:
+  ansible.windows.win_package:
     path: "{{ one_source }}Redistr\\x64\\SqlExpress\\2016SP2\\SQLEXPR_x64_ENU.exe"
     product_id: SQL 2016 Express
     arguments: 
@@ -129,7 +129,7 @@
     ansible_become_pass: "{{ one_userpassword }}"
   when: sql_setup | bool
 - name: Install ONE Monitor Server with license file
-  win_package:
+  ansible.windows.win_package:
     path: "{{ one_source }}Monitor\\VeeamONE.Monitor.Server.x64.msi"
     state: present
     # Veean Documentation wrong, VM_VC_SELECTED_TYPE=2 is not default!
@@ -137,7 +137,7 @@
   when: one_license | bool
   register: win_package_one_monitor_server
 - name: Install ONE Monitor Server without license file
-  win_package:
+  ansible.windows.win_package:
     path: "{{ one_source }}Monitor\\VeeamONE.Monitor.Server.x64.msi"
     state: present
     # Veean Documentation wrong, VM_VC_SELECTED_TYPE=2 is not default!
@@ -145,31 +145,31 @@
   when: not one_license | bool
   register: win_package_one_monitor_server
 - name: Install ONE Reporter Server with license file
-  win_package:
+  ansible.windows.win_package:
     path: "{{ one_source }}Reporter\\VeeamONE.Reporter.Server.x64.msi"
     state: present
     arguments: "EDITLICFILEPATH={{ one_destination }}{{ one_destination_license }} ACCEPT_THIRDPARTY_LICENSES=1 ACCEPT_EULA=1 VM_RP_SERVICEACCOUNT={{ one_username }} VM_RP_SERVICEPASSWORD={{ one_userpassword }} VM_RP_SQL_SERVER=localhost\\VEEAMSQL2016 VM_RP_SQL_AUTHENTICATION=1 VM_RP_SQL_USER=sa VM_RP_SQL_PASSWORD={{ sql_sapassword }} VM_BACKUP_ADD_LATER=1 VM_VC_SELECTED_TYPE=2"
   when: one_license | bool
   register: win_package_one_reporter_server
 - name: Install ONE Reporter Server without license file
-  win_package:
+  ansible.windows.win_package:
     path: "{{ one_source }}Reporter\\VeeamONE.Reporter.Server.x64.msi"
     state: present
     arguments: "ACCEPT_THIRDPARTY_LICENSES=1 ACCEPT_EULA=1 VM_RP_SERVICEACCOUNT={{ one_username }} VM_RP_SERVICEPASSWORD={{ one_userpassword }} VM_RP_SQL_SERVER=localhost\\VEEAMSQL2016 VM_RP_SQL_AUTHENTICATION=1 VM_RP_SQL_USER=sa VM_RP_SQL_PASSWORD={{ sql_sapassword }} VM_BACKUP_ADD_LATER=1 VM_VC_SELECTED_TYPE=2"
   when: not one_license | bool
   register: win_package_one_reporter_server
 - name: Install ONE Reporter Web UI  
-  win_package:
+  ansible.windows.win_package:
     path: "{{ one_source }}Reporter\\VeeamONE.Reporter.WebUI.x64.msi"
     state: present
     arguments: "ACCEPT_THIRDPARTY_LICENSES=1 ACCEPT_EULA=1 VM_RP_SERVICEACCOUNT={{ one_username }} VM_RP_SERVICEPASSWORD={{ one_userpassword }} VM_RP_SQL_SERVER=localhost\\VEEAMSQL2016 VM_RP_SQL_AUTHENTICATION=1 VM_RP_SQL_USER=sa VM_RP_SQL_PASSWORD={{ sql_sapassword }}"
 - name: Install ONE Monitor Client
-  win_package:
+  ansible.windows.win_package:
     path: "{{ one_source }}Monitor\\VeeamONE.Monitor.Client.x64.msi"
     state: present
     arguments: "ACCEPT_THIRDPARTY_LICENSES=1 ACCEPT_EULA=1"
 - name: Install ONE Agent 
-  win_package:
+  ansible.windows.win_package:
     path: "{{ one_source }}Agent\\VeeamONE.Agent.x64.msi"
     state: present
     arguments: "ACCEPT_THIRDPARTY_LICENSES=1 ACCEPT_EULA=1 VO_AGENT_TYPE=1 VO_BUNDLE_INSTALLATION=1 VO_AGENT_SERVICE_ACCOUNT_NAME={{ one_username }} VO_AGENT_SERVICE_ACCOUNT_PASSWORD={{ one_userpassword }}"
