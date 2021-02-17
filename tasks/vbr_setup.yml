@@ -30,7 +30,7 @@
     path: "{{ one_source }}Redistr\\ReportViewer.msi"
     state: present
 - name: Pre - Create Local Service and RunAs User
-  win_user:
+  ansible.windows.win_user:
     name: "{{ vbr_username }}"
     password: "{{ vbr_userpassword }}"
     password_never_expires: yes
@@ -76,21 +76,21 @@
     state: present
     arguments:
         - 'ACCEPT_THIRDPARTY_LICENSES=1'
-  register: ansible.windows.win_package_vbr_catalog
+  register: win_package_vbr_catalog
 - name: Install VBR Server with license
   ansible.windows.win_package:
     path: "{{ vbr_source }}Backup\\Server.x64.msi"
     state: present
     arguments: "VBR_LICENSE_FILE={{ vbr_destination }}{{ vbr_destination_license }} VBR_SQLSERVER_AUTHENTICATION=1 VBR_SQLSERVER_SERVER={{ sql_instance }} VBR_SQLSERVER_USERNAME=sa VBR_SQLSERVER_PASSWORD={{ sql_sapassword }} ACCEPT_THIRDPARTY_LICENSES=1 ACCEPTEULA=YES"
   when: vbr_license | bool
-  register: ansible.windows.win_package_vbr_server
+  register: win_package_vbr_server
 - name: Install VBR Server without license
   ansible.windows.win_package:
     path: "{{ vbr_source }}Backup\\Server.x64.msi"
     state: present
     arguments: "VBR_SQLSERVER_AUTHENTICATION=1 VBR_SQLSERVER_SERVER={{ sql_instance }} VBR_SQLSERVER_USERNAME=sa VBR_SQLSERVER_PASSWORD={{ sql_sapassword }} ACCEPT_THIRDPARTY_LICENSES=1 ACCEPTEULA=YES"
   when: not vbr_license | bool
-  register: ansible.windows.win_package_vbr_server
+  register: win_package_vbr_server
 - name: Install VBR Console
   ansible.windows.win_package:
     path: "{{ vbr_source }}Backup\\Shell.x64.msi"
@@ -98,7 +98,7 @@
     arguments:
         - 'ACCEPTEULA=YES'
         - 'ACCEPT_THIRDPARTY_LICENSES=1'
-  register: ansible.windows.win_package_vbr_console
+  register: win_package_vbr_console
 - name: Install VBR Explorer for ActiveDirectory
   ansible.windows.win_package:
     path: "{{ vbr_source }}Explorers\\VeeamExplorerForActiveDirectory.msi"
