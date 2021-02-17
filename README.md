@@ -68,6 +68,11 @@ An Ansible Role to install and update [Veeam](https://www.veeam.com) components 
 - General 
   - Fix sime Lint findings
 
+### Version 1.0
+- vbr_setup
+  - v11 RTM
+  - Switch to win collection
+
 ## Requirements
 
 ### Hardware 
