@@ -25,6 +25,14 @@
   ansible.windows.win_package:
     path: "{{ vbr_source }}Redistr\\x64\\SharedManagementObjects.msi"
     state: present
+- name: Pre - Install 2015  Visual C++ Redistributable
+  ansible.windows.win_package:
+    path: "{{ vbr_source }}Redistr\\x64\\vc_redist.x64.exe"
+    arguments:
+    - /install
+    - /passive
+    - /norestart
+  when: install_vc_redist | bool
 - name: Pre - Install ReportViewer
   ansible.windows.win_package:
     path: "{{ one_source }}Redistr\\ReportViewer.msi"

@@ -1,14 +1,13 @@
 galaxy_info:
   author: Markus Kraus
-  description: This Role runs the unattended setup / update of Veeam Backup & Replication and Veeam ONE
+  description: This Role runs the unattended setup of Veeam Backup & Replication v11 and Veeam ONE v11
   company: mycloudrevolution.com
   license: GPL-3.0-only
-  min_ansible_version: 2.8
+  min_ansible_version: 2.9
   platforms:
   - name: Windows
     versions:
      - 2019
-     - 2016
   galaxy_tags: 
     - veeam
     - server
