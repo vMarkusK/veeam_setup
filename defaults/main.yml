@@ -35,3 +35,4 @@ sql_instance: "(local)\\VEEAMSQL2016"
 sql_username: "svc_sql"
 sql_userpassword: "ChangeM3!"
 sql_sapassword: "ChangeM3!"
+install_vc_redist: false
