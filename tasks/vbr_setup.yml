@@ -37,6 +37,20 @@
   ansible.windows.win_package:
     path: "{{ one_source }}Redistr\\ReportViewer.msi"
     state: present
+- name: Pre - Install ASP .NET Core
+  ansible.windows.win_package:
+    path: "{{ one_source }}Redistr\\x64\\aspnetcore-runtime-3.1.10-win-x64.exe"
+    arguments:
+    - /install
+    - /quiet
+    - /norestart
+- name: Pre - Install .NET Core
+  ansible.windows.win_package:
+    path: "{{ one_source }}Redistr\\x64\\adotnet-runtime-3.1.10-win-x64.exe"
+    arguments:
+    - /install
+    - /quiet
+    - /norestart
 - name: Pre - Create Local Service and RunAs User
   ansible.windows.win_user:
     name: "{{ vbr_username }}"
