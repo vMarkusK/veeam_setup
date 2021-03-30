@@ -46,7 +46,7 @@
     - /norestart
 - name: Pre - Install .NET Core
   ansible.windows.win_package:
-    path: "{{ one_source }}Redistr\\x64\\adotnet-runtime-3.1.10-win-x64.exe"
+    path: "{{ one_source }}Redistr\\x64\\dotnet-runtime-3.1.10-win-x64.exe"
     arguments:
     - /install
     - /quiet
